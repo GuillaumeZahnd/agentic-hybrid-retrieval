@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+openai = {version="==2.13.0", index="pypi"}
+mistralai = {version="==1.9.11", index="pypi"}
+instructor = {version="==1.13.0", index="pypi"}
+pydantic = {version="==2.12.5", index="pypi"}
+rank-bm25 = {version="==0.2.2", index="pypi"}
+numpy = {version="==2.3.5", index="pypi"}
+faiss-gpu-cu12 = {version="==1.13.0", index="pypi"}
+nltk = {version="==3.9.2", index="pypi"}
+
+
+[requires]
+python_version = "3.12"

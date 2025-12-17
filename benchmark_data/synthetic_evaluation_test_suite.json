@@ -1,0 +1,86 @@
+[
+    {
+        "question": "What are tardigrades commonly referred to as?",
+        "ground_truth": "Water bears or moss piglets.",
+        "complexity": "Lexical",
+        "is_answerable": true,
+        "verification_logic": "This question tests lexical complexity by using the exact keywords 'tardigrades' and 'commonly referred to as' from the context, which are critical for BM25/keyword-based retrieval systems."
+    },
+    {
+        "question": "What is the informal name for these microscopic eight-legged creatures?",
+        "ground_truth": "Water bears or moss piglets.",
+        "complexity": "Semantic",
+        "is_answerable": true,
+        "verification_logic": "This question tests semantic complexity by avoiding unique nouns like 'tardigrades' and 'moss piglets' and using synonyms like 'informal name' and 'microscopic eight-legged creatures' to evaluate vector search capabilities."
+    },
+    {
+        "question": "How many legs do the animals known as water bears possess, and what is their biological classification?",
+        "ground_truth": "Eight legs; they are a phylum of segmented micro-animals.",
+        "complexity": "Reasoning",
+        "is_answerable": true,
+        "verification_logic": "This question tests reasoning complexity by requiring synthesis of information from two different parts of the context: the number of legs ('eight-legged') and their biological classification ('phylum of segmented micro-animals')."
+    },
+    {
+        "question": "What are tardigrades known for in terms of their ability to withstand harsh environments?",
+        "ground_truth": "They are among the most resilient animals, able to survive severe conditions like extreme temperatures, pressures, air deprivation, radiation, dehydration, and starvation.",
+        "complexity": "Lexical",
+        "is_answerable": true,
+        "verification_logic": "The question uses exact keywords and phrases from the context, such as 'tardigrades,' 'resilient,' 'withstand harsh environments,' and 'severe conditions.' This tests keyword-based retrieval like BM25."
+    },
+    {
+        "question": "Which microscopic creatures can endure exposure to the vacuum and radiation of space without protection?",
+        "ground_truth": "Tardigrades.",
+        "complexity": "Semantic",
+        "is_answerable": true,
+        "verification_logic": "The question avoids unique nouns like 'tardigrades' and verbs like 'survive,' instead using synonyms such as 'microscopic creatures,' 'endure,' and 'exposure to the vacuum and radiation of space.' This tests vector search capabilities."
+    },
+    {
+        "question": "What two extreme conditions have tardigrades survived that most other life forms cannot, and where have they demonstrated this survival ability?",
+        "ground_truth": "Tardigrades have survived exposure to outer space and extreme temperatures, pressures, air deprivation, radiation, dehydration, and starvation.",
+        "complexity": "Reasoning",
+        "is_answerable": true,
+        "verification_logic": "This question requires synthesizing information from two different parts of the context: (1) the list of extreme conditions tardigrades can survive, and (2) their survival in outer space. This tests the system's ability to reason and combine facts."
+    },
+    {
+        "question": "What did Johann August Ephraim Goeze name the tardigrade in 1773, and what does it translate to in English?",
+        "ground_truth": "Kleiner Wasserb\u00e4r, meaning 'little water-bear'.",
+        "complexity": "Lexical",
+        "is_answerable": true,
+        "verification_logic": "The question uses exact keywords from the context, such as 'Johann August Ephraim Goeze,' 'tardigrade,' '1773,' and 'Kleiner Wasserb\u00e4r.' This tests the system's ability to retrieve information based on exact keyword matching."
+    },
+    {
+        "question": "What term did a German scientist use for a microscopic organism that translates to 'small aquatic ursine' in English?",
+        "ground_truth": "Kleiner Wasserb\u00e4r.",
+        "complexity": "Semantic",
+        "is_answerable": true,
+        "verification_logic": "The question avoids unique nouns like 'tardigrade,' 'Goeze,' and 'German,' instead using synonyms like 'microscopic organism,' 'scientist,' and 'aquatic ursine.' This tests the system's ability to understand semantic meaning and retrieve information without relying on exact keywords."
+    },
+    {
+        "question": "Why is the tardigrade referred to as both a 'water bear' and a 'slow walker,' and who contributed these names?",
+        "ground_truth": "The name 'water bear' comes from its walking style resembling a bear's gait, while 'slow walker' (Tardigradum) was named by Lazzaro Spallanzani in 1776.",
+        "complexity": "Reasoning",
+        "is_answerable": true,
+        "verification_logic": "This question requires synthesizing information from two different sentences: one explaining the origin of 'water bear' and another detailing the naming of 'Tardigradum.' It tests the system's ability to combine facts for a comprehensive answer."
+    },
+    {
+        "question": "What protein protects tardigrade DNA from radiation according to the context?",
+        "ground_truth": "Dsup protein",
+        "complexity": "Lexical",
+        "is_answerable": true,
+        "verification_logic": "The question uses exact keywords from the context, such as 'protein,' 'tardigrade DNA,' and 'radiation.' This tests the ability of a system to retrieve information based on keyword matching, which is characteristic of BM25/keyword retrieval."
+    },
+    {
+        "question": "Which molecule helps shield genetic material in water bears from harmful radiation effects?",
+        "ground_truth": "Dsup protein",
+        "complexity": "Semantic",
+        "is_answerable": true,
+        "verification_logic": "The question avoids using unique nouns like 'Dsup,' 'tardigrade,' or 'nucleosomes.' Instead, it uses synonyms such as 'molecule,' 'genetic material,' and 'water bears.' This tests the system's ability to understand and retrieve information based on semantic meaning, which is critical for Vector search."
+    },
+    {
+        "question": "How does the Dsup protein of Ramazzottius varieornatus contribute to both radiation resistance and DNA repair?",
+        "ground_truth": "It protects chromosomal DNA from hydroxyl radicals and upregulates DNA repair genes.",
+        "complexity": "Reasoning",
+        "is_answerable": true,
+        "verification_logic": "The question requires synthesizing information from two different sentences: one about protecting chromosomal DNA from hydroxyl radicals and another about upregulating DNA repair genes. This tests the system's ability to reason and combine facts from multiple parts of the context."
+    }
+]
