@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 from source.hybrid_retrieval import hybrid_rag_pipeline
 
+
 client = Mistral(api_key=os.environ.get("MISTRAL_API_KEY"))
 instructor_client = instructor.from_mistral(client, mode=instructor.Mode.MISTRAL_TOOLS)
 
@@ -32,28 +33,38 @@ def run_evaluation_suite(benchmark, documents):
 
     for test_case in benchmark:
 
-        actual_context, actual_answer, route_taken = unified_rag_pipeline(
-            query=test_case['question'], documents=documents)
+        actual_context, actual_answer, route_taken = hybrid_rag_pipeline(
+            query=test_case["question"], documents=documents)
 
         evaluation_result = evaluate_faithfulness(
-            test_case['question'], actual_context, actual_answer)
+            test_case["question"], actual_context, actual_answer)
 
         results.append({
-            "question": test_case['question'],
+            "question": test_case["question"],
+            "answer": actual_answer,            
             "score": evaluation_result.score,
             "route_taken": route_taken,
-            "complexity": test_case['complexity']
+            "complexity": test_case["complexity"]
         })
 
     return results
 
 
 def print_detailed_logs(evaluation_report):
-    for r in evaluation_report:
-        if len(r['question']) > 64:
-            question_string = r['question'][:64] + "..."
-        else:
-            question_string = r['question']
 
-        print("🔍 Query: {}\nComplexity: {} | Route taken: {} | Decision faithfulness: {}/5\n".format(
-            question_string, r['complexity'], r["route_taken"], r["score"]))
+    max_string_length = 80
+
+    for r in evaluation_report:
+    
+        if len(r["question"]) > max_string_length:
+            question_string = r["question"][:max_string_length] + "..."
+        else:
+            question_string = r["question"]
+            
+        if len(r["answer"]) > max_string_length:
+            answer_string = r["answer"][:max_string_length] + "..."
+        else:
+            answer_string = r["answer"]            
+
+        print("🔍 Query: {}\nAnswer: {}\nComplexity: {} | Route taken: {} | Decision faithfulness: {}/5\n".format(
+            question_string, answer_string, r["complexity"], r["route_taken"], r["score"]))
