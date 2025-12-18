@@ -52,8 +52,7 @@ def run_deep_path(query: str, documents: list[str], top_k=5):
     return [candidates[0]]
 
 
-
-def unified_retrieval(query: str, documents: list[str]):
+def apply_routing(query: str, documents: list[str]):
     route_decision = agentic_router(query)
     if route_decision.path == "fast":
         return run_fast_path(query=query, documents=documents), route_decision.path
@@ -63,7 +62,7 @@ def unified_retrieval(query: str, documents: list[str]):
         raise ValueError("Invalid route decision: '{}'. Expected either 'fast' or 'deep'.".format(route_decision.path))
 
 
-def unified_rag_pipeline(query: str, documents: list[str]) -> tuple[str, str, str]:
+def hybrid_rag_pipeline(query: str, documents: list[str]) -> tuple[str, str, str]:
     """
     Combine routing, retrieval, and generation.
 
@@ -77,7 +76,7 @@ def unified_rag_pipeline(query: str, documents: list[str]) -> tuple[str, str, st
         Route taken (fast or deep).
     """
 
-    retrieved_chunks, route_taken = unified_retrieval(query=query, documents=documents)
+    retrieved_chunks, route_taken = apply_routing(query=query, documents=documents)
     context_str = " ".join(retrieved_chunks)
 
     response = client.chat.complete(
