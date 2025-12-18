@@ -1,12 +1,12 @@
 # Agentic Hybrid Retrieval
 
-This toy project is an **Agentic Hybrid Retrieval Framework** designed to balance operational cost with response depth. It addresses the "one-size-fits-all" limitation of standard Retrieval-Augmented Generation (RAG) by implementing a dynamic, two-path architecture that optimizes for both computational efficiency and answer quality.
+This toy project is an **Agentic Hybrid Retrieval Framework** 🤖 designed to balance operational cost with response depth. It addresses the "one-size-fits-all" limitation of standard Retrieval-Augmented Generation (RAG) by implementing a dynamic, two-path architecture that optimizes for both computational efficiency and answer quality.
 
-The framework functions as an autonomous decision engine, calibrating computational expenditure based on self-assessed query complexity. It directs simple factual lookups through a "Fast" lightweight path to minimize latency and cost, while shifting to a "Deep" high-resource path when the demand for precision requires sophisticated synthesis and reranking.
+The framework functions as an autonomous decision engine, calibrating computational expenditure based on self-assessed query complexity. It directs simple factual lookups through a "Fast" ⚡ lightweight path to minimize latency and cost, while shifting to a "Deep" 🧠 high-resource path when the demand for precision requires sophisticated synthesis and reranking.
 
-🛠️ Key Technical Pillars
+🛠️ Key technical pillars
 
-- **Adaptive routing:** An intelligent gateway that classifies queries on-the-fly (either `fast` or `deep`) to optimize latency and resource allocation, while preserving answer quality.
+- **Adaptive routing:** An intelligent gateway that classifies queries on-the-fly (either "Fast" or "Deep") to optimize latency and resource allocation, while preserving answer quality.
 
 - **Cold-start benchmarking:** Synthetic generation of test cases to build a robust evaluation suite from scratch.
 
@@ -21,6 +21,16 @@ The framework functions as an autonomous decision engine, calibrating computatio
 ## Running the scripts
 
 ### `generate_benchmark.py`
+
+> This script automates the creation of a high-quality, cold-start RAG evaluation suite by generating synthetic test cases from raw text chunks. It uses LLM-as-a-Judge logic to categorize adversarial data points into specific complexity tiers—Lexical, Semantic, and Reasoning—to rigorously test retrieval and synthesis performance.
+> 
+> 📋 Key features:
+> 
+> **Structured outputs:** Uses Pydantic to ensure every test point includes ground truth and verification logic.
+> 
+> **Adversarial benchmarking:** Specifically targets the weaknesses of different retrieval methods (BM25 vs. Vector Search).
+> 
+> **Automated ground truth:** Eliminates the need for manual labeling in production environments.
 
 🧬 Processing chunk: Tardigrades, known colloquially as water bears or moss pigle...
 
@@ -58,6 +68,14 @@ The framework functions as an autonomous decision engine, calibrating computatio
 
 ### `demo_agentic_router.py`
 
+> This script implements an agentic gateway that autonomously classifies user queries to optimize the RAG pipeline's computational efficiency. By analyzing query complexity on-the-fly, it directs traffic to either a "fast" path for simple lookups or a "deep" path for tasks requiring complex synthesis and reranking.
+> 
+> ⚙️ Core mechanics:
+> 
+> **Dynamic resource allocation:** Minimizes latency and cost by reserving high-compute resources only for reasoning-heavy queries.
+>
+> **Structured metadata:** Returns a Pydantic-validated RouteDecision containing both the chosen path and the model's underlying rationale.
+
 #### Example 1
 
 🔍 **Query:** How many legs do tardigrades have?
@@ -78,7 +96,17 @@ The framework functions as an autonomous decision engine, calibrating computatio
 
 💡 **Reason:** The query requires a conceptual understanding of tardigrade biology, specifically their proteins, and how these relate to broader biomedical research. This involves synthesizing information about tardigrade survival mechanisms, the role of their proteins, and their potential applications in medicine.
 
-### `demo_two_path_retrieval.py`
+### `demo_hybrid_retrieval.py`
+
+> This script provides the operational core of the Hybrid RAG Pipeline, orchestrating the execution of two different retrieval strategies based on real-time agentic routing. It manages the bifurcation between a "Fast Path" utilizing BM25 lexical search for keyword efficiency and a "Deep Path" employing FAISS vector search and reranking for nuanced semantic synthesis.
+> 
+> ⚙️ Core mechanics:
+>
+> **Multi-modal retrieval:** Integrates both token-based (BM25) and embedding-based (FAISS) retrieval methods.
+>
+> **Intelligent bifurcation:** Wraps the agentic_router to dynamically select the retrieval depth, returning the context, the final answer, and the path metadata for evaluation.
+>
+> **Contextual generation:** Filters input through the chosen path to ensure the final generation is grounded strictly in retrieved chunks.
 
 #### Example 1
 
@@ -105,6 +133,16 @@ The framework functions as an autonomous decision engine, calibrating computatio
 💬 **Answer:** Based on the provided context, some tardigrade proteins, like the Dsup protein, are of interest to biomedical research because they protect DNA from damage caused by radiation (such as hydroxyl radicals) and ultraviolet-C light. Additionally, they can promote survival by binding to nucleosomes and upregulating DNA repair genes.
 
 ### `main_evaluator.py`
+
+> This script implements an LLM-as-a-Judge evaluation framework to audit the RAG pipeline's performance in production without labeled data. It automates the verification of faithfulness—identifying hallucinations by cross-referencing generated answers against retrieved contexts—while logging the accuracy of agentic routing decisions across different query complexities.
+> 
+> 🛠️ Key technical pillars:
+>
+> "Production audit:" Uses high-reasoning models (Mistral Large) to grade pipeline outputs on a strict 1-5 scale.
+>
+> "Routing verification:" Tracks which path "Fast" vs. "Deep" was taken and compares it to the predefined query complexity.
+>
+> "Granular telemetry:" Provides detailed logs to visualize the relationship between retrieval depth, question difficulty, and final answer quality.
 
 🔍 Query: What are tardigrades commonly referred to as?
 
