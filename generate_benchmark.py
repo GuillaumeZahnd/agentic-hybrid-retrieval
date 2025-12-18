@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     with open(os.path.join(test_suite_path, chunks_filename)) as fid:
         raw_chunks = [line.rstrip() for line in fid]
-        
+
     benchmark = generate_synthetic_evaluation_test_suite(raw_chunks)
 
     if not os.path.exists(test_suite_path):

@@ -3,7 +3,7 @@ import instructor
 from mistralai import Mistral
 from pydantic import BaseModel, Field
 
-from source.two_path_retrieval import unified_rag_pipeline
+from source.hybrid_retrieval import hybrid_rag_pipeline
 
 client = Mistral(api_key=os.environ.get("MISTRAL_API_KEY"))
 instructor_client = instructor.from_mistral(client, mode=instructor.Mode.MISTRAL_TOOLS)
@@ -25,28 +25,35 @@ def evaluate_faithfulness(question: str, context: str, answer: str) -> Evaluatio
         ]
     )
 
+
 def run_evaluation_suite(benchmark, documents):
+
     results = []
-    
+
     for test_case in benchmark:
-        # 1. Capture the route decision manually or return it from the pipeline
-        # Assuming you modify unified_rag_pipeline to return the route used # TODO
+
         actual_context, actual_answer, route_taken = unified_rag_pipeline(
-            query=test_case['question'], 
-            documents=documents
-        )
-        
+            query=test_case['question'], documents=documents)
+
         evaluation_result = evaluate_faithfulness(
             test_case['question'], actual_context, actual_answer)
-        
-        is_route_correct = route_taken.lower() == test_case['expectation'].lower()
-        
+
         results.append({
             "question": test_case['question'],
             "score": evaluation_result.score,
             "route_taken": route_taken,
-            "route_correct": is_route_correct,
-            "complexity": test_case['expectation'] # "Fast" or "Deep"
+            "complexity": test_case['complexity']
         })
-    
+
     return results
+
+
+def print_detailed_logs(evaluation_report):
+    for r in evaluation_report:
+        if len(r['question']) > 64:
+            question_string = r['question'][:64] + "..."
+        else:
+            question_string = r['question']
+
+        print("🔍 Query: {}\nComplexity: {} | Route taken: {} | Decision faithfulness: {}/5\n".format(
+            question_string, r['complexity'], r["route_taken"], r["score"]))

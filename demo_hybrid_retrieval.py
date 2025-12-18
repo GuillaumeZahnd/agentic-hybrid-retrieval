@@ -1,6 +1,6 @@
 import os
 
-from source.two_path_retrieval import unified_rag_pipeline
+from source.hybrid_retrieval import hybrid_rag_pipeline
 
 
 if __name__ == "__main__":
@@ -17,11 +17,12 @@ if __name__ == "__main__":
     ]
 
     for q in test_queries:
-    
+
+        print("🔍 Query: {}".format(q["query"]))
+        print("🎯 Expected route: {}".format(q["expectation"].upper()))
+
         retrieved_context, answer = unified_rag_pipeline(q["query"], documents)
 
-        print("Query: {}".format(q["query"]))
-        print("Retrieved context: {}".format(retrieved_context))
-        print("Expected route: {}".format(q["expectation"]))
-        print("Answer: {}".format(answer))
+        print("📚 Retrieved context: {}".format(retrieved_context))
+        print("💬 Answer: {}".format(answer))
         print("\n")

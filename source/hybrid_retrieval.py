@@ -38,39 +38,48 @@ def run_fast_path(query: str, documents: list[str], top_k=1):
 def run_deep_path(query: str, documents: list[str], top_k=5):
     """Vector Search + Rerank: Semantic, handles conceptual queries."""
     print("🧠 Executing Deep Path (Vector Search + Reranking)")
-    
+
     document_embeddings = get_embeddings(documents)
     index = faiss.IndexFlatL2(document_embeddings.shape[1])
     index.add(document_embeddings)
 
     query_embeddings = get_embeddings([query])
     distances, indices = index.search(query_embeddings, top_k)
-    
+
     candidates = [documents[i] for i in indices[0] if i != -1]
-    
-    # TODO: Add reranking
-    return [candidates[0]] 
+
+    # TODO: Add reranking (https://github.com/GuillaumeZahnd/retrieval-augmented-generation/blob/main/source/rerank_chunks.py)
+    return [candidates[0]]
 
 
 
 def unified_retrieval(query: str, documents: list[str]):
     route_decision = agentic_router(query)
     if route_decision.path == "fast":
-        return run_fast_path(query=query, documents=documents)
+        return run_fast_path(query=query, documents=documents), route_decision.path
     elif route_decision.path == "deep":
-        return run_deep_path(query=query, documents=documents)
+        return run_deep_path(query=query, documents=documents), route_decision.path
     else:
         raise ValueError("Invalid route decision: '{}'. Expected either 'fast' or 'deep'.".format(route_decision.path))
 
-        
-def unified_rag_pipeline(query: str, documents: list[str]) -> tuple[str, str]:
+
+def unified_rag_pipeline(query: str, documents: list[str]) -> tuple[str, str, str]:
     """
-    Combines routing, retrieval, and generation to return both the context and the final answer.
+    Combine routing, retrieval, and generation.
+
+    Args:
+        query: Input query.
+        documents: List of documents.
+
+     Returns:
+        Context.
+        Answer.
+        Route taken (fast or deep).
     """
 
-    retrieved_chunks = unified_retrieval(query=query, documents=documents) 
+    retrieved_chunks, route_taken = unified_retrieval(query=query, documents=documents)
     context_str = " ".join(retrieved_chunks)
-        
+
     response = client.chat.complete(
         model="mistral-large-latest",
         messages=[
@@ -79,5 +88,5 @@ def unified_rag_pipeline(query: str, documents: list[str]) -> tuple[str, str]:
         ]
     )
     actual_answer = response.choices[0].message.content
-    
-    return context_str, actual_answer        
+
+    return context_str, actual_answer, route_taken

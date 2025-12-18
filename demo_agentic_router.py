@@ -9,5 +9,5 @@ if __name__ == "__main__":
 
     for q in test_queries:
         decision = agentic_router(q["query"])
-        print("Query: {}\nAgent decision: {}\nExpected decision: {}\nReason: {}\n".format(
-            q["query"], decision.path.upper(), q["expectation"], decision.reasoning))
+        print("🔍 Query: {}\n🎯 Expected decision: {}\n🤖 Agent decision: {}\n💡 Reason: {}\n".format(
+            q["query"], q["expectation"].upper(), decision.path.upper(), decision.reasoning))
